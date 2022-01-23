@@ -43,7 +43,7 @@ function Dishes({ restId }) {
         {restaurant.dishes.map((res) => (
           <Col xs="6" sm="4" style={{ padding: 0 }} key={res.id}>
             <Card style={{ margin: '0 10px' }}>
-              <CardImg top={true} style={{ width: " auto" }} src={`${process.env.NEXT_PUBLIC_API_URL}${res.image.url}`} />
+              <CardImg top={true} style={{ width: ' auto' }} src={res.image.url} />
               <CardBody>
                 <CardTitle>{res.name}</CardTitle>
                 <CardText>{res.description}</CardText>

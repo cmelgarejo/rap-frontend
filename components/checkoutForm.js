@@ -63,8 +63,13 @@ function CheckoutForm() {
       { headers: { Authorization: `Bearer ${userToken}` } }
     );
 
-    if (response.status === 200) setError('Your order has been successfully created!');
-    else setError(response.statusText);
+    if (response.status === 200) {
+      setError('Your order has been successfully created!');
+      appContext.setCart({
+        items: [],
+        total: 0,
+      });
+    } else setError(response.statusText);
 
     // OTHER stripe methods you can use depending on app
     // // or createPaymentMethod - https://stripe.com/docs/js/payment_intents/create_payment_method

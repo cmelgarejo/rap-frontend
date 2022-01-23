@@ -41,7 +41,7 @@ function RestaurantList(props) {
     const restList = searchQuery.map((res) => (
       <Col xs="6" sm="4" key={res.id}>
         <Card style={{ margin: '0 0.5rem 20px 0.5rem' }}>
-          <CardImg top={true} style={{ width: " auto" }} src={`${process.env.NEXT_PUBLIC_API_URL}${res.image.url}`} />
+          <CardImg top={true} style={{ width: " auto" }} src={res.image.url} />
           <CardBody>
             <CardText>{res.description}</CardText>
           </CardBody>
