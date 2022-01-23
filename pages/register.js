@@ -1,11 +1,9 @@
-/* /pages/register.js */
-
+import Link from 'next/link';
 import React, { useState, useContext } from 'react';
-
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { registerUser } from '../components/auth';
 import AppContext from '../components/context';
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
 const Register = () => {
   const [data, setData] = useState({ email: '', username: '', password: '' });
   const [loading, setLoading] = useState(false);
@@ -17,7 +15,7 @@ const Register = () => {
         <Col sm="12" md={{ size: 5, offset: 3 }}>
           <div className="paper">
             <div className="header">
-              <img src="http://localhost:1337/uploads/5a60a9d26a764e7cba1099d8b157b5e9.png" />
+              <img src="/raplogo.png" style={{ width: '100px', backgroundColor: 'white' }} />
             </div>
             <section className="wrapper">
               {Object.entries(error).length !== 0 &&
@@ -63,11 +61,11 @@ const Register = () => {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <span>
-                      <a href="">
-                        <small>Forgot Password?</small>
-                      </a>
-                    </span>
+                    <Link href={`${API_URL}/connect/google`}>
+                      <Button color="primary">
+                        <a>Connect with Google</a>
+                      </Button>
+                    </Link>
                     <Button
                       style={{ float: 'right', width: 120 }}
                       color="primary"
@@ -79,10 +77,10 @@ const Register = () => {
                             // set authed user in global context object
                             appContext.setUser(res.data.user);
                             setLoading(false);
-                            console.log(`registered user: ${JSON.stringify(res.data)}`);
+                            console.info(`registered user: ${JSON.stringify(res.data)}`);
                           })
                           .catch((error) => {
-                            console.log(`error in register: ${error}`);
+                            console.error(error);
                             //setError(error.response.data);
                             setLoading(false);
                           });

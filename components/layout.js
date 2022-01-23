@@ -1,5 +1,3 @@
-/* /components/Layout.js */
-
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -8,20 +6,14 @@ import AppContext from './context';
 
 const Layout = (props) => {
   const title = 'Welcome! - RAP - Restaurant App Project';
-  const { user } = useContext(AppContext);
+  const { user, setUser, logout } = useContext(AppContext);
   return (
     <div>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <link
-          rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossOrigin="anonymous"
-        />
-        <script src="https://js.stripe.com/v3" />
+        <link rel="icon" type="image/png" href="favicon.png" />
       </Head>
       <header>
         <style jsx>
@@ -38,7 +30,7 @@ const Layout = (props) => {
         <Nav className="navbar navbar-dark bg-dark">
           <NavItem>
             <Link href="/">
-              <a className="navbar-brand">Home</a>
+              <img src="/raplogo.png" style={{ width: 100, backgroundColor: 'white' }} />
             </Link>
           </NavItem>
           <NavItem className="ml-auto">
@@ -71,7 +63,7 @@ const Layout = (props) => {
           </NavItem>
         </Nav>
       </header>
-      <Container>{props.children}</Container>
+      <Container className="main-container">{props.children}</Container>
     </div>
   );
 };

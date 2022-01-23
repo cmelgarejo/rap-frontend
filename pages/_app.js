@@ -1,18 +1,24 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import AppContext from '../components/context';
 import Home from './index';
 import Layout from '../components/layout';
 import Cookie from 'js-cookie';
-import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/index.css';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { logout } from '../components/auth';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
 
 function MyApp(props) {
-  var { cart, addItem, removeItem, user, setUser } = useContext(AppContext);
-  const [state, setState] = useState({ cart: cart });
+  var { cart, addItem, removeItem, user, setUser, isAuthenticated } = useContext(AppContext);
+  const [state, setState] = useState({ cart: cart, user: user, isAuthenticated: isAuthenticated });
   const { Component, pageProps } = props;
 
   setUser = (user) => {
-    setState({ user });
+    setState({ ...state, user });
   };
   addItem = (item) => {
     let { items } = state.cart;
@@ -26,7 +32,7 @@ function MyApp(props) {
     } else {
       foundItem = false;
     }
-    console.log(`Found Item value: ${JSON.stringify(foundItem)}`);
+    // console.info(`Found Item value: ${JSON.stringify(foundItem)}`);
     // if item is not new, add to cart, set quantity to 1
     if (!foundItem) {
       //set quantity property to 1
@@ -37,11 +43,11 @@ function MyApp(props) {
         items: [...state.cart.items, temp],
         total: state.cart.total + item.price,
       };
-      setState({ cart: newCart });
-      console.log(`Total items: ${JSON.stringify(newCart)}`);
+      setState({ ...state, cart: newCart });
+      console.info(`Total items: ${JSON.stringify(newCart)}`);
     } else {
       // we already have it so just increase quantity ++
-      console.log(`Total so far:  ${state.cart.total}`);
+      console.info(`Total so far:  ${state.cart.total}`);
       newCart = {
         items: items.map((item) => {
           if (item.id === foundItem.id) {
@@ -53,8 +59,8 @@ function MyApp(props) {
         total: state.cart.total + item.price,
       };
     }
-    setState({ cart: newCart }); // problem is this is not updated yet
-    console.log(`state reset to cart:${JSON.stringify(state)}`);
+    setState({ ...state, cart: newCart });
+    console.info(`state reset to cart:${JSON.stringify(state)}`);
   };
   removeItem = (item) => {
     let { items } = state.cart;
@@ -71,16 +77,29 @@ function MyApp(props) {
         }),
         total: state.cart.total - item.price,
       };
-      //console.log(`NewCart after remove: ${JSON.stringify(newCart)}`)
+      //console.info(`NewCart after remove: ${JSON.stringify(newCart)}`)
     } else {
       // only 1 in the cart so remove the whole item
-      console.log(`Try remove item ${JSON.stringify(foundItem)}`);
+      console.info(`Try remove item ${JSON.stringify(foundItem)}`);
       const index = items.findIndex((i) => i.id === foundItem.id);
       items.splice(index, 1);
       var newCart = { items: items, total: state.cart.total - item.price };
     }
-    setState({ cart: newCart });
+    setState({ ...state, cart: newCart });
   };
+  logout: () => {
+    Cookies.remove('token');
+    setUser(null);
+    setState({ ...state, user: null, isAuthenticated: false });
+  };
+  useEffect(async () => {
+    const userToken = Cookies.get('token');
+    if (userToken) {
+      const res = await axios.get(`${API_URL}/users/me`, { headers: { Authorization: `Bearer ${userToken}` } });
+      console.log(res);
+      setUser(res.data);
+    }
+  }, []);
 
   return (
     <AppContext.Provider
@@ -89,19 +108,11 @@ function MyApp(props) {
         addItem: addItem,
         removeItem: removeItem,
         isAuthenticated: false,
-        user: null,
-        setUser: () => {},
+        user: state.user,
+        setUser: setUser,
+        logout: logout,
       }}
     >
-      <Head>
-        <link
-          rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossOrigin="anonymous"
-        />
-      </Head>
-
       <Layout>
         <Component {...pageProps} />
       </Layout>

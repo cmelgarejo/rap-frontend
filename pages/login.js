@@ -1,11 +1,10 @@
-/* /pages/login.js */
-
 import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { login } from '../components/auth';
 import AppContext from '../components/context';
-
+import Link from 'next/link';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
 function Login(props) {
   const [data, updateData] = useState({ identifier: '', password: '' });
   const [loading, setLoading] = useState(false);
@@ -29,7 +28,7 @@ function Login(props) {
         <Col sm="12" md={{ size: 5, offset: 3 }}>
           <div className="paper">
             <div className="header">
-              <img src="http://localhost:1337/uploads/5a60a9d26a764e7cba1099d8b157b5e9.png" />
+              <img src="/raplogo.png" style={{ width: '100px', backgroundColor: 'white' }} />
             </div>
             <section className="wrapper">
               {Object.entries(error).length !== 0 &&
@@ -62,11 +61,6 @@ function Login(props) {
                   </FormGroup>
 
                   <FormGroup>
-                    <span>
-                      <a href="">
-                        <small>Forgot Password?</small>
-                      </a>
-                    </span>
                     <Button
                       style={{ float: 'right', width: 120 }}
                       color="primary"
@@ -79,13 +73,18 @@ function Login(props) {
                             appContext.setUser(res.data.user);
                           })
                           .catch((error) => {
-                            //setError(error.response.data);
+                            setError(error.response.data);
                             setLoading(false);
                           });
                       }}
                     >
                       {loading ? 'Loading... ' : 'Submit'}
                     </Button>
+                    <Link href={`${API_URL}/connect/google`}>
+                      <Button color="primary">
+                        <a>Connect with Google</a>
+                      </Button>
+                    </Link>
                   </FormGroup>
                 </fieldset>
               </Form>

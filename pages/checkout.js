@@ -1,5 +1,3 @@
-/* pages/checkout.js */
-
 import React, { useContext } from 'react';
 import { Row, Col } from 'reactstrap';
 import { loadStripe } from '@stripe/stripe-js';

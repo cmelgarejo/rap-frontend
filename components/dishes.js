@@ -32,24 +32,24 @@ function Dishes({ restId }) {
   });
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>ERROR here</p>;
+  if (error) return <p></p>;
   if (!data) return <p>Not found</p>;
 
   let restaurant = data.restaurant;
 
-  if (restId > 0) {
+  if (restId) {
     return (
       <>
         {restaurant.dishes.map((res) => (
           <Col xs="6" sm="4" style={{ padding: 0 }} key={res.id}>
             <Card style={{ margin: '0 10px' }}>
-              <CardImg top={true} style={{ height: 150, width: 150 }} src={`http://localhost:1337${res.image.url}`} />
+              <CardImg top={true} style={{ width: " auto" }} src={`${process.env.NEXT_PUBLIC_API_URL}${res.image.url}`} />
               <CardBody>
                 <CardTitle>{res.name}</CardTitle>
                 <CardText>{res.description}</CardText>
               </CardBody>
               <div className="card-footer">
-                <Button color="info" outline color="primary" onClick={() => addItem(res)}>
+                <Button color="info" color="primary" onClick={() => addItem(res)}>
                   + Add To Cart
                 </Button>
               </div>

@@ -25,7 +25,7 @@ function RestaurantList(props) {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>ERROR</p>;
   if (!data) return <p>Not found</p>;
-  console.log(`Query Data: ${data.restaurants}`);
+  // console.info(`Query Data: `, data.restaurants);
 
   let searchQuery = data.restaurants.filter((res) => {
     return res.name.toLowerCase().includes(props.search);
@@ -41,7 +41,7 @@ function RestaurantList(props) {
     const restList = searchQuery.map((res) => (
       <Col xs="6" sm="4" key={res.id}>
         <Card style={{ margin: '0 0.5rem 20px 0.5rem' }}>
-          <CardImg top={true} style={{ height: 200 }} src={`http://localhost:1337` + res.image.url} />
+          <CardImg top={true} style={{ width: " auto" }} src={`${process.env.NEXT_PUBLIC_API_URL}${res.image.url}`} />
           <CardBody>
             <CardText>{res.description}</CardText>
           </CardBody>
@@ -62,7 +62,7 @@ function RestaurantList(props) {
       </Container>
     );
   } else {
-    return <h1> No Restaurants Found</h1>;
+    return <h3> No restaurants found with name "{props.search}"</h3>;
   }
 }
 export default RestaurantList;
