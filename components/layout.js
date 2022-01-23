@@ -16,17 +16,6 @@ const Layout = (props) => {
         <link rel="icon" type="image/png" href="favicon.png" />
       </Head>
       <header>
-        <style jsx>
-          {`
-            a {
-              color: white;
-            }
-            h5 {
-              color: white;
-              padding-top: 11px;
-            }
-          `}
-        </style>
         <Nav className="navbar navbar-dark bg-dark">
           <NavItem>
             <Link href="/">
@@ -35,10 +24,10 @@ const Layout = (props) => {
           </NavItem>
           <NavItem className="ml-auto">
             {user ? (
-              <h5>{user.username}</h5>
+              <h4>What are we going to eat now, <strong>{user.username}</strong>?</h4>
             ) : (
               <Link href="/register">
-                <a className="nav-link"> Sign up</a>
+                <a className="nav-link">Sign up</a>
               </Link>
             )}
           </NavItem>

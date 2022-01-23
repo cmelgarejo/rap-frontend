@@ -8,7 +8,6 @@ function CardSection(props) {
     <div>
       <div>
         <label htmlFor="card-element">Credit or debit card</label>
-
         <div>
           <fieldset style={{ border: 'none' }}>
             <div className="form-row">
@@ -24,23 +23,13 @@ function CardSection(props) {
                   <div style={{ fontSize: 14, margin: '0.1em', padding: '0.5em' }}>{props.stripeError.toString()}</div>
                 ) : null}
               </div>
-              <div className="order-button-wrapper">
-                <button onClick={props.submitOrder}>Confirm order</button>
+              <div className="order-button-wrapper ">
+                <button className='checkout-button' onClick={props.submitOrder}>Confirm order</button>
               </div>
             </div>
           </fieldset>
         </div>
       </div>
-      <style jsx>
-        {`
-          .order-button-wrapper {
-            display: flex;
-            width: 100%;
-            align-items: flex-end;
-            justify-content: flex-end;
-          }
-        `}
-      </style>
     </div>
   );
 }

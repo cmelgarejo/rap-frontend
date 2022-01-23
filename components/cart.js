@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { Button, Card, CardBody, CardTitle, Badge } from 'reactstrap';
+import { Button, Card, CardBody, CardTitle, Badge, Container, Row, Col } from 'reactstrap';
 import AppContext from './context';
 import Link from 'next/link';
 // we can pass cart data in via props method
 // the alternative is using useContext as below
-function Cart() {
-  let { cart, addItem, removeItem, isAuthenticated } = useContext(AppContext);
+function Cart({ checkout }) {
+  let { cart, addItem, removeItem, user } = useContext(AppContext);
   //const [cartA, setCartA] = useState({cart})
   //cart = value.cart;
   // console.info('props:'+ JSON.stringify(value));
@@ -75,48 +75,61 @@ function Cart() {
             <h5 style={{ fontWeight: 100, color: 'gray' }}>Total:</h5>
             <h3 style={{ color: 'black' }}>${cart.items.reduce((acc, cur) => (acc += cur.quantity * cur.price), 0)}</h3>
           </Badge>
-          <Link href="/checkout/">
-            <Button style={{ width: '60%' }} color="primary">
-              <a>Order</a>
-            </Button>
-          </Link>
+          {user ? (
+            <Link href="/checkout">
+              <Button style={{ width: '60%' }} color="primary">
+                Checkout
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <Button style={{ width: '60%' }} color="primary">
+                Sign in to get RAP!
+              </Button>
+            </Link>
+          )}
         </div>
       );
     else <div></div>;
   };
 
   // return Cart
-  console.info(`Router Path: ${router.asPath}`);
+  // console.info(`Router Path: ${router.asPath}`);
   return (
-    <div>
-      <h1> Cart</h1>
-      <Card style={{ padding: '10px 5px' }} className="cart">
-        <CardTitle style={{ margin: 10 }}>Your Order:</CardTitle>
-        <hr />
-        <CardBody style={{ padding: 10 }}>
-          <div style={{ marginBottom: 6 }}>
-            <small>Items:</small>
-          </div>
-          <div>{renderItems()}</div>
-          <div>{checkoutItems()}</div>
-        </CardBody>
-      </Card>
-      <style jsx>{`
-        #item-price {
-          font-size: 1.3em;
-          color: rgba(97, 97, 97, 1);
-        }
-        #item-quantity {
-          font-size: 0.95em;
-          padding-bottom: 4px;
-          color: rgba(158, 158, 158, 1);
-        }
-        #item-name {
-          font-size: 1.3em;
-          color: rgba(97, 97, 97, 1);
-        }
-      `}</style>
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <h1>Cart</h1>
+
+          {cart.items.length < 1 ? (
+            <Container>
+              <Row>
+                <Col>
+                  <h3>Your cart is empty</h3>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <img src="/emptycart.png" style={{ width: '100%', backgroundColor: 'white' }} />
+                </Col>
+              </Row>
+            </Container>
+          ) : (
+            <Card style={{ padding: '10px 5px' }} className="cart">
+              <CardTitle style={{ margin: 10 }}>Your Order</CardTitle>
+              <hr />
+              <CardBody style={{ padding: 10 }}>
+                <div style={{ marginBottom: 6 }}>
+                  <small>Items:</small>
+                </div>
+                <div>{renderItems()}</div>
+                <div>{checkoutItems()}</div>
+              </CardBody>
+            </Card>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 export default Cart;

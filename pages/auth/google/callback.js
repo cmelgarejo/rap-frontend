@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
-import { Container, Row, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Container, Row, Col, Button, Form, FormGroup, Label, Input, Spinner } from 'reactstrap';
 import { login } from '../../../components/auth';
 import AppContext from '../../../components/context';
 import Link from 'next/link';
@@ -36,22 +36,10 @@ function GoogleCallback(props) {
     <Container>
       <Row>
         <Col>
-          <div className="paper">
-            <div className="header">
-              <img src="/raplogo.png" style={{ width: '100px', backgroundColor: 'white' }} />
-            </div>
-            <section className="wrapper">
-              {Object.entries(error).length !== 0 &&
-                error.constructor === Object &&
-                error.message.map((error) => {
-                  return (
-                    <div key={error.messages[0].id} style={{ marginBottom: 10 }}>
-                      <small style={{ color: 'red' }}>{error.messages[0].message}</small>
-                    </div>
-                  );
-                })}
-            </section>
-          </div>
+          <Button variant="primary" disabled>
+            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+            <span className="visually-hidden">Poo...</span>
+          </Button>
         </Col>
       </Row>
     </Container>

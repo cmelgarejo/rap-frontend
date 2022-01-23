@@ -5,7 +5,7 @@ import Home from './index';
 import Layout from '../components/layout';
 import Cookie from 'js-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/index.css';
+import '../styles/globals.css';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { logout } from '../components/auth';
@@ -13,10 +13,13 @@ import { logout } from '../components/auth';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
 
 function MyApp(props) {
-  var { cart, addItem, removeItem, user, setUser, isAuthenticated } = useContext(AppContext);
-  const [state, setState] = useState({ cart: cart, user: user, isAuthenticated: isAuthenticated });
+  var { cart, addItem, removeItem, user, setUser, setCart } = useContext(AppContext);
+  const [state, setState] = useState({ cart: cart, user: user });
   const { Component, pageProps } = props;
 
+  setCart = (cart) => {
+    setState({ ...state, cart });
+  };
   setUser = (user) => {
     setState({ ...state, user });
   };
@@ -107,9 +110,10 @@ function MyApp(props) {
         cart: state.cart,
         addItem: addItem,
         removeItem: removeItem,
-        isAuthenticated: false,
+        isAuthenticated: state.user ? true : false,
         user: state.user,
         setUser: setUser,
+        setCart: setCart,
         logout: logout,
       }}
     >

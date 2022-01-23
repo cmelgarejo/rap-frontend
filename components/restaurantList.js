@@ -3,7 +3,7 @@ import Dishes from './dishes';
 import { useContext, useState } from 'react';
 
 import AppContext from './context';
-import { Button, Card, CardBody, CardImg, CardText, CardTitle, Container, Row, Col } from 'reactstrap';
+import { Button, Card, CardBody, CardImg, CardText, CardTitle, Container, Row, Col, Spinner } from 'reactstrap';
 
 function RestaurantList(props) {
   const [restaurantID, setRestaurantID] = useState(0);
@@ -22,7 +22,13 @@ function RestaurantList(props) {
     }
   `;
   const { loading, error, data } = useQuery(GET_RESTAURANTS);
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <Button variant="primary" disabled>
+        <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+        <span className="visually-hidden">Poo...</span>
+      </Button>
+    );
   if (error) return <p>ERROR</p>;
   if (!data) return <p>Not found</p>;
   // console.info(`Query Data: `, data.restaurants);
@@ -41,7 +47,7 @@ function RestaurantList(props) {
     const restList = searchQuery.map((res) => (
       <Col xs="6" sm="4" key={res.id}>
         <Card style={{ margin: '0 0.5rem 20px 0.5rem' }}>
-          <CardImg top={true} style={{ width: " auto" }} src={res.image.url} />
+          <CardImg top={true} style={{ width: '100%' }} src={res.image ? res.image.url : `./raplogo.png`} />
           <CardBody>
             <CardText>{res.description}</CardText>
           </CardBody>
@@ -56,9 +62,8 @@ function RestaurantList(props) {
 
     return (
       <Container>
-        <Row xs="3">{restList}</Row>
-
-        <Row xs="3">{renderDishes(restaurantID)}</Row>
+        <Row xs="12">{restList}</Row>
+        <Row xs="12">{renderDishes(restaurantID)}</Row>
       </Container>
     );
   } else {
