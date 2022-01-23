@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CardElement } from '@stripe/react-stripe-js';
+import { Button } from 'reactstrap';
 
 function CardSection(props) {
   return (
@@ -14,16 +15,18 @@ function CardSection(props) {
               <div id="card-element" style={{ width: '100%' }}>
                 <CardElement
                   options={{
-                    style: { width: '100%', base: { fontSize: '18px' } },
+                    style: { width: '100%', base: { fontSize: '16px' } },
                   }}
                 />
               </div>
-              <br />
+              <div id="card-errors" role="alert">
+                {props.stripeError ? (
+                  <div style={{ fontSize: 14, margin: '0.1em', padding: '0.5em' }}>{props.stripeError.toString()}</div>
+                ) : null}
+              </div>
               <div className="order-button-wrapper">
                 <button onClick={props.submitOrder}>Confirm order</button>
               </div>
-              {props.stripeError ? <div>{props.stripeError.toString()}</div> : null}
-              <div id="card-errors" role="alert" />
             </div>
           </fieldset>
         </div>

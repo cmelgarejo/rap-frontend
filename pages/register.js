@@ -62,8 +62,13 @@ const Register = () => {
                   </FormGroup>
                   <FormGroup>
                     <Link href={`${API_URL}/connect/google`}>
-                      <Button color="primary">
-                        <a>Connect with Google</a>
+                      <Button color="primary" outline>
+                        <img
+                          className="google-icon"
+                          alt="Google sign-in"
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
+                        />
+                        Connect with Google
                       </Button>
                     </Link>
                     <Button
